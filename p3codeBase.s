@@ -10,9 +10,35 @@
 # b --> $s1
 # c --> $s2
 # d --> $s3
-main:    
-    
+main:   
+li $s0,5 #a = 5
+li $s1, 6 #b = 6
+li $s2, 7 #c = 7
+li $s3, -1 #d = -1
 
+
+bge $s0, 10, else # !(a < 10)
+addi $s0, $s0, 1 # a ++
+j next
+else: addi $s0, $s0, -1 # a—-
+next: add $s3, $s0, $s2 #d = a + c
+add $s2, $s0, $s3 #c = a + d
+
+bge $s1, 10, elsee # !(b < 10)
+addi $s1, $s1, 1 # b++
+addi $s2, $s2, -1 #c—-
+j nexts
+elsee: add $s1,$s1,-1 #b—-
+addi $s2,$s2,1 #c++
+nexts: add $s0, $s2, $s1 #a = c + b
+add $s1, $s2, $s3 #b = a + d
+
+bge $s1, $s2, elseee # b = > c
+ble $s1, $s0, elseee # b < = a
+add $s3, $s0, $s1 #d = a + b
+elseee: ble $s1, $s2 , in_if
+bge $s2, $s0, exit
+in_if: add $s3, $s1, $s2 # d = b + c
 exit:
     la   $a0, albl      # puts albl into arg0 (a0 register) for cout
     addi $v0, $0, 4     # puts 4 in v0 which denotes we are printing a string
